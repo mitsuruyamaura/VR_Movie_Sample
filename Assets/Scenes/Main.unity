@@ -179,36 +179,44 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8131643945627314983, guid: d0cb6d084681e664e9fd2122439b32c7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 21.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 8131643945627314983, guid: d0cb6d084681e664e9fd2122439b32c7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.71
+      value: 28.44
       objectReference: {fileID: 0}
     - target: {fileID: 8131643945627314983, guid: d0cb6d084681e664e9fd2122439b32c7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 32.78
+      value: 29.95
       objectReference: {fileID: 0}
     - target: {fileID: 8131643945627314983, guid: d0cb6d084681e664e9fd2122439b32c7, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5608466
+      value: 0.39719775
       objectReference: {fileID: 0}
     - target: {fileID: 8131643945627314983, guid: d0cb6d084681e664e9fd2122439b32c7, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.031356182
+      value: 0.39719775
       objectReference: {fileID: 0}
     - target: {fileID: 8131643945627314983, guid: d0cb6d084681e664e9fd2122439b32c7, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.8260358
+      value: 0.58500767
       objectReference: {fileID: 0}
     - target: {fileID: 8131643945627314983, guid: d0cb6d084681e664e9fd2122439b32c7, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.04618255
+      value: -0.58500767
       objectReference: {fileID: 0}
     - target: {fileID: 8131643945627314983, guid: d0cb6d084681e664e9fd2122439b32c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 6.4
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 8131643945627314983, guid: d0cb6d084681e664e9fd2122439b32c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 111.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 8131643945627315002, guid: d0cb6d084681e664e9fd2122439b32c7, type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0cb6d084681e664e9fd2122439b32c7, type: 3}
