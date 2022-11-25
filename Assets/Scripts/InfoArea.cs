@@ -4,38 +4,39 @@ using UnityEngine;
 
 public class InfoArea : MonoBehaviour
 {
-    private ItemDetail itemDetail;
+    private ObjectInfoView objectInfoView;
 
 
     private void Start() {
-        if (TryGetComponent(out itemDetail)) {
-            Debug.Log("ItemDetail æ“¾‚µ‚Ü‚µ‚½B");           
+        if (transform.parent.gameObject.TryGetComponent(out objectInfoView)) {
+            Debug.Log("InfoArea ‚ª ObjectInfoView ‚ğæ“¾‚µ‚Ü‚µ‚½B");           
         }
     }
 
     private void OnTriggerEnter(Collider other) {
-        Debug.Log("N“ü‚µ‚Ä‚«‚½ : " + other.name);
+        //Debug.Log("N“ü‚µ‚Ä‚«‚½ : " + other.name);
         if (other.TryGetComponent(out PlayerController player)) {
             Debug.Log(player);
-            itemDetail.ShowItemName();
+            objectInfoView.ShowItemName();
         }
     }
 
 
     private void OnTriggerStay(Collider other) {
-        Debug.Log("N“ü’† : " + other.name);
+        //Debug.Log("N“ü’† : " + other.name);
         if (other.TryGetComponent(out PlayerController player)) {
-            Debug.Log(player);
-            itemDetail.LookPlayer();
+            //Debug.Log(player);
+            objectInfoView.LookPlayer();
         }
     }
 
 
     private void OnTriggerExit(Collider other) {
-        Debug.Log("‚¢‚È‚­‚È‚Á‚½ : " + other.name);
+        //Debug.Log("‚¢‚È‚­‚È‚Á‚½ : " + other.name);
         if (other.TryGetComponent(out PlayerController player)) {
-            Debug.Log(player);
-            itemDetail.HideItemName();
+            //Debug.Log(player);
+
+            objectInfoView.HideItemName();
         }
     }
 }
