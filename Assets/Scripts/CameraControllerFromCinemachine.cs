@@ -1,7 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Cinemachine 用のカメラ制御クラス
+/// Follow には追従対象のゲームオブジェクトをアサイン。Look At はアサインなし。
+/// Boby には Framing Transposer を設定。Game ビューでカメラの稼働範囲(Soft Zone Width と Height)を設定できるようになる
+/// カメラの Z 位置は Camera Distance にて設定
+/// Aim には DoAnything を設定。これを設定しないとカメラが上下回転しない
+
+/// </summary>
 public class CameraControllerFromCinemachine : MonoBehaviour
 {
     [Header("追跡するゲームオブジェクト")]
