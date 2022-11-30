@@ -1,5 +1,7 @@
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 public class MoviePlayTest : MonoBehaviour
 {
@@ -12,6 +14,12 @@ public class MoviePlayTest : MonoBehaviour
 
     void Start()
     {
-        btnPlayTest.onClick.AddListener(() => VideoClipManager.instance.PrepareVideoClip(movieNo));
+        // これだけだと連続タップで重複判定してしまうので、UniRx 使った方がいい
+        //btnPlayTest.onClick.AddListener(() => VideoClipManager.instance.PrepareVideoClip(movieNo));
+
+        btnPlayTest.OnClickAsObservable()
+            .ThrottleFirst(System.TimeSpan.FromSeconds(1.0f))
+            .Subscribe(_ => VideoClipManager.instance.PrepareVideoClip(movieNo))
+            .AddTo(this);
     }
 }

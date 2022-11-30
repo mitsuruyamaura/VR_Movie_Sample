@@ -16,8 +16,9 @@ public class VideoClipManager : MonoBehaviour {
 
     public VideoClip clip;
 
-
     public bool IsVideoPlaying { get => videoPlayer.isPlaying; }
+
+    private float fadeDuration = 1.0f;
 
 
     void Awake() {
@@ -115,9 +116,10 @@ public class VideoClipManager : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     private IEnumerator PlayVideo() {
+        canvasGroup.blocksRaycasts = true;
 
         // TODO フェードインして再生(簡易。後でトランジションと合わせる)
-        canvasGroup.DOFade(1.0f, 1.0f).OnComplete(() => canvasGroup.blocksRaycasts = true);   // OnComplete でPlay するとダメ
+        canvasGroup.DOFade(1.0f, fadeDuration);   // OnComplete で Video の Play するとダメ
 
         videoPlayer.Play();
 
@@ -160,7 +162,7 @@ public class VideoClipManager : MonoBehaviour {
         videoPlayer.Stop();
 
         // フェードアウトして初期化
-        canvasGroup.DOFade(0, 1.0f)
+        canvasGroup.DOFade(0, fadeDuration)
             .OnComplete(() => {
                 Initialize();
             });

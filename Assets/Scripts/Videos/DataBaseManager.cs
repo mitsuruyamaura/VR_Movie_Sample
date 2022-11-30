@@ -5,6 +5,8 @@ public class DataBaseManager : MonoBehaviour
     public static DataBaseManager instance;
 
     public VideoDataSO videoDataSO;
+    public ItemDataSO itemDataSO;
+
 
     void Awake() {
         if (instance == null) {
@@ -22,5 +24,10 @@ public class DataBaseManager : MonoBehaviour
     /// <returns></returns>
     public VideoData GetVideoData(int searchVideoNo) {
         return videoDataSO.videoDatasList.Find(x => x.videoNo == searchVideoNo);
+    }
+
+
+    public ItemData GetItemData(int searchItemNo) {
+        return itemDataSO.itemDataList.Find(x => x.itemNo == searchItemNo);
     }
 }
