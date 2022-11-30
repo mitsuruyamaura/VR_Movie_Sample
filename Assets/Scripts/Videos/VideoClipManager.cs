@@ -76,19 +76,19 @@ public class VideoClipManager : MonoBehaviour {
                 // VideoClip の情報がある場合は、それを使う
                 videoPlayer.clip = sourceVideoClip;
             }
-
-
-            // 読み込み後のイベントのコールバック登録
-            videoPlayer.prepareCompleted += OnCompletePrepare;
-
-            // 読み込み開始
-            videoPlayer.Prepare();
-
-            Debug.Log("VideoClip ロード開始");
-
-            // TODO フェイドインと合わせる
-
         }
+
+        // 読み込み後のイベントのコールバック登録
+        videoPlayer.prepareCompleted += OnCompletePrepare;
+
+        // 読み込み開始
+        videoPlayer.Prepare();
+
+        Debug.Log("VideoClip ロード開始");
+
+        // TODO フェイドインと合わせる
+
+
 
         /// <summary>
         /// Prepare 完了時に呼ばれるコールバック
@@ -123,12 +123,12 @@ public class VideoClipManager : MonoBehaviour {
 
         Debug.Log("VideoClip 再生");
 
-        // 再生が終了するまで待機
+        // 再生が終了するか、スキップするまで待機(一時停止の処理と、一時停止した途中からの再生処理はないので、それらを実装したい場合にはこの条件式を変更する必要がある)
         while (videoPlayer.isPlaying) {
 
             // 再生中にタップしたら再生停止してスキップ
             if (Input.GetMouseButtonDown(0)) {
-                PauseVideo();
+                SkipVideo();
             }
             yield return null;
         }
@@ -140,15 +140,14 @@ public class VideoClipManager : MonoBehaviour {
     /// <summary>
     /// VideoClip の一時停止
     /// </summary>
-    public void PauseVideo() {
+    public void SkipVideo() {
 
         // 再生中の VideoClip がある場合
         if (videoPlayer.isPlaying) {
 
-            // 一時停止(isPlayng が false になる)
+            // 内部的には一時停止(isPlayng が false になる)だが、今回は PlayVideo メソッドの while 文の条件式において、この処理のみでスキップするように条件設定している
             videoPlayer.Pause();
-
-            Debug.Log("VideoClip 一時停止");
+            Debug.Log("VideoClip スキップ");
         }
     }
 
@@ -167,5 +166,29 @@ public class VideoClipManager : MonoBehaviour {
             });
 
         Debug.Log("VideoClip 停止");
+    }
+
+
+//***************  未使用  ******************//
+
+
+    public void PauseVideo() {
+        // 再生中の VideoClip がある場合
+        if (videoPlayer.isPlaying) {
+
+            videoPlayer.Pause();
+            Debug.Log("VideoClip 一時停止");
+        }
+    }
+
+
+    public void ResumeVideo() {
+        // 再生中の VideoClip がある場合
+        if (videoPlayer.clip) {
+
+            // isPlayng が true になる
+            videoPlayer.Play();
+            Debug.Log("VideoClip 一時停止した部分から再生");
+        }
     }
 }
