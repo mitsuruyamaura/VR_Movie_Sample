@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b745d7136bc06a4195c902bdc52aebf, type: 3}
   m_Name: VideoDataSO
   m_EditorClassIdentifier: 
-  videoDatasList: []
+  videoDatasList:
+  - videoNo: 0
+    videoClip: {fileID: 32900000, guid: f2048692dfd7f484aa890d3374249238, type: 3}
+  - videoNo: 1
+    videoClip: {fileID: 32900000, guid: f012f4090b7a4d94d9394c1ead5da8c5, type: 3}
