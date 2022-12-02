@@ -1,10 +1,10 @@
+using System.Collections;
 using UnityEngine;
 using UniRx;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using UniRx.Triggers;　　// UpdateAsObservable()や EveryUpdate() の際に必要
 using InputAsRx;         // InputAsObservable 
-
 
 
 // UniRx のInput の拡張
@@ -19,6 +19,9 @@ public enum GameState {
 
 public class TimeModel : MonoBehaviour
 {
+    public ReactiveProperty<int> TotalTime = new();
+
+
     void Start()
     {
         // Interval と Timer では、最初のメッセージを発行するタイミングが異なる
@@ -40,7 +43,7 @@ public class TimeModel : MonoBehaviour
         //    .AddTo(this);
 
         //StartCoroutine(ObserveTime());
-        TimerAsync(this.GetCancellationTokenOnDestroy()).Forget();
+        //TimerAsync(this.GetCancellationTokenOnDestroy()).Forget();
 
         //this.UpdateAsObservable()
         //    .Subscribe(_ => 
@@ -70,7 +73,7 @@ public class TimeModel : MonoBehaviour
     }
 
 
-    private async UniTask TimerAsync(CancellationToken token) {
+    public async UniTask TimerAsync(CancellationToken token) {
         //var token = this.GetCancellationTokenOnDestroy();
 
         // キャンセル処理が発生するまで繰り返す
@@ -82,6 +85,7 @@ public class TimeModel : MonoBehaviour
             }
 
             totalTime++;
+            TotalTime.Value += 10;
 
             // 1秒待つ => 途中で GameState が切り替わっても、次の処理までは止まらないので、+1秒される
             // いやな場合には、変数で加算した方がよい
@@ -102,8 +106,10 @@ public class TimeModel : MonoBehaviour
         //TimerUpdate();
     }
 
-
-    void TimerUpdate() {
+    /// <summary>
+    /// 時間の測定
+    /// </summary>
+    public void TimerUpdate() {
         if (gameState == GameState.Wait) {
             return;
         }
@@ -113,30 +119,40 @@ public class TimeModel : MonoBehaviour
         if (timer >= interval) {
             timer = 0;
             totalTime++;
+            TotalTime.Value++;
             Debug.Log($"経過時間 : {totalTime} 秒");
         }
     }
 
 
-    //private IEnumerator ObserveTime() {
-    //    while (true) {
-    //        if (gameState == GameState.Wait) {
-    //            yield return null;
-    //            continue;
-    //        }
-    //        timer += Time.deltaTime;
-    //        if (timer >= interval) {
-    //            timer = 0;
-    //            totalTime++;
-    //            Debug.Log($"経過時間 : {totalTime} 秒");
-    //        }
-    //        yield return null;
-    //    }
+    public void PrepareObserveTime() {
+        StartCoroutine(ObserveTime());
+    }
 
-    //    while (true) {
-    //        yield return new WaitForSeconds(1.0f);
-    //        totalTime++;
-    //        Debug.Log($"経過時間 : {totalTime} 秒");
-    //    }
-    //}
+    /// <summary>
+    /// 時間の測定
+    /// </summary>
+    private IEnumerator ObserveTime() {
+        while (true) {
+            if (gameState == GameState.Wait) {
+                yield return null;
+                continue;
+            }
+            timer += Time.deltaTime;
+            if (timer >= interval) {
+                timer = 0;
+                totalTime++;
+                TotalTime.Value++;
+                Debug.Log($"経過時間 : {totalTime} 秒");
+            }
+            yield return null;
+        }
+
+        //while (true) {
+        //    yield return new WaitForSeconds(1.0f);
+        //    totalTime++;
+        //    TotalTime.Value++;
+        //    Debug.Log($"経過時間 : {totalTime} 秒");
+        //}
+    }
 }
