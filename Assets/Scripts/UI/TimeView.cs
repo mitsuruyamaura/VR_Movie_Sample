@@ -28,4 +28,11 @@ public class TimeView : MonoBehaviour
         tmpTime.DOCounter(oldTime, time, duration).SetEase(ease);
         oldTime = time;
     }
+
+
+    public void DisplayTimeTween(int oldTime, int newTime) {
+        txtTime.DOCounter(oldTime, newTime, duration).SetEase(Ease.Linear);
+
+        tmpTime.DOCounter(oldTime, newTime, duration).SetEase(ease);
+    }
 }

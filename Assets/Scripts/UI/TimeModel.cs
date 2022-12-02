@@ -106,7 +106,9 @@ public class TimeModel : MonoBehaviour
         //TimerUpdate();
     }
 
-
+    /// <summary>
+    /// ŽžŠÔ‚Ì‘ª’è
+    /// </summary>
     public void TimerUpdate() {
         if (gameState == GameState.Wait) {
             return;
@@ -127,6 +129,9 @@ public class TimeModel : MonoBehaviour
         StartCoroutine(ObserveTime());
     }
 
+    /// <summary>
+    /// ŽžŠÔ‚Ì‘ª’è
+    /// </summary>
     private IEnumerator ObserveTime() {
         while (true) {
             if (gameState == GameState.Wait) {
