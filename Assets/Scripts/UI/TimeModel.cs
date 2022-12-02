@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using Cysharp.Threading.Tasks;
 using System.Threading;
-using UniRx.Triggers;
-using InputAsRx;
+using UniRx.Triggers;　　// UpdateAsObservable()や EveryUpdate() の際に必要
+using InputAsRx;         // InputAsObservable 
 
 
 
@@ -53,12 +51,22 @@ public class TimeModel : MonoBehaviour
         //    })
         //    .AddTo(this);
 
-        // 拡張メソッド
+        // 挙動的には UpdateAsObservable と同じだが、MonoBehaviour に紐づかなくても利用できる
+        // ただし OnComplete メッセージを発行しないので、UpdateAsObservable の方が安全(手動で Dispose しないといけない。AddTo が利用できない)
+        // そのため MonoBehaviour に紐づけない場合のみ利用する方がいい
+        //Observable.EveryUpdate()
+        //    .Subscribe(_ => {
+        //        if (Input.GetMouseButtonDown(0)) {
+        //            gameState = gameState == GameState.Play ? GameState.Wait : GameState.Play;
+        //        }
+        //    })
+        //    .AddTo(this);
+
+
+        // 上記の拡張メソッド
         InputAsObservable.GetMouseButtonDown(0)
             .Subscribe(_ => gameState = gameState == GameState.Play ? GameState.Wait : GameState.Play)
             .AddTo(this);
-
-        
     }
 
 
@@ -82,7 +90,7 @@ public class TimeModel : MonoBehaviour
         }
 
         // 指定秒(ここでは1秒)待機するか、指定した処理(ここではマウスクリックする)まで待機
-        await UniTaskHelper.DelaySkippable(1000, () => Input.GetMouseButtonDown(0));
+        //await UniTaskHelper.DelaySkippable(1000, () => Input.GetMouseButtonDown(0));
     }
 
     float timer = 0;
@@ -96,6 +104,10 @@ public class TimeModel : MonoBehaviour
 
 
     void TimerUpdate() {
+        if (gameState == GameState.Wait) {
+            return;
+        }
+
         timer += Time.deltaTime;
 
         if (timer >= interval) {
@@ -107,20 +119,24 @@ public class TimeModel : MonoBehaviour
 
 
     //private IEnumerator ObserveTime() {
-    //while (true) {
-    //    timer += Time.deltaTime;
-    //    if (timer >= interval) {
-    //        timer = 0;
+    //    while (true) {
+    //        if (gameState == GameState.Wait) {
+    //            yield return null;
+    //            continue;
+    //        }
+    //        timer += Time.deltaTime;
+    //        if (timer >= interval) {
+    //            timer = 0;
+    //            totalTime++;
+    //            Debug.Log($"経過時間 : {totalTime} 秒");
+    //        }
+    //        yield return null;
+    //    }
+
+    //    while (true) {
+    //        yield return new WaitForSeconds(1.0f);
     //        totalTime++;
     //        Debug.Log($"経過時間 : {totalTime} 秒");
     //    }
-    //    yield return null;
-    //}
-
-    //while (true) {
-    //    yield return new WaitForSeconds(1.0f);
-    //    totalTime++;
-    //    Debug.Log($"経過時間 : {totalTime} 秒");
-    //}
     //}
 }
