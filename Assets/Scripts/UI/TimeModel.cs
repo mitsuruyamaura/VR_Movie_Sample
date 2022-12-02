@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using Cysharp.Threading.Tasks;
+using System.Threading;
+using UniRx.Triggers;
+using InputAsRx;
+
+
+
+// UniRx のInput の拡張
+// キー入力、マウス入力をIObservable<T>に変換して使う
+// https://qiita.com/Euglenach/items/29833548294a8b822b79
 
 
 public enum GameState {
@@ -20,6 +30,7 @@ public class TimeModel : MonoBehaviour
         // Subscribe してから1秒間隔でメッセージを発行する
         // (最初に1秒待機してから、1秒間隔でメッセージ発行)
         //Observable.Interval(System.TimeSpan.FromSeconds(1))
+        //    .Where(_ => gameState == GameState.Play)   // このパターンだと、途中で再開した場合にも、時間は経過し続けている
         //    .Subscribe(x => Debug.Log($"経過時間 : {x + 1} 秒"))    // "経過時間 : " + x + "秒")
         //    .AddTo(this);
 
@@ -29,6 +40,49 @@ public class TimeModel : MonoBehaviour
         //Observable.Timer(System.TimeSpan.Zero, System.TimeSpan.FromSeconds(1))
         //    .Subscribe(x => Debug.Log($"経過時間 : { x } 秒"))
         //    .AddTo(this);
+
+        //StartCoroutine(ObserveTime());
+        TimerAsync(this.GetCancellationTokenOnDestroy()).Forget();
+
+        //this.UpdateAsObservable()
+        //    .Subscribe(_ => 
+        //    {
+        //        if (Input.GetMouseButtonDown(0)) {
+        //            gameState = gameState == GameState.Play ? GameState.Wait : GameState.Play;
+        //        }
+        //    })
+        //    .AddTo(this);
+
+        // 拡張メソッド
+        InputAsObservable.GetMouseButtonDown(0)
+            .Subscribe(_ => gameState = gameState == GameState.Play ? GameState.Wait : GameState.Play)
+            .AddTo(this);
+
+        
+    }
+
+
+    private async UniTask TimerAsync(CancellationToken token) {
+        //var token = this.GetCancellationTokenOnDestroy();
+
+        // キャンセル処理が発生するまで繰り返す
+        while (!token.IsCancellationRequested) {
+
+            if (gameState == GameState.Wait) {
+                await UniTask.Yield();
+                continue;
+            }
+
+            totalTime++;
+
+            // 1秒待つ => 途中で GameState が切り替わっても、次の処理までは止まらないので、+1秒される
+            // いやな場合には、変数で加算した方がよい
+            await UniTask.Delay(1000, cancellationToken: token);
+            Debug.Log($"経過時間 : {totalTime} 秒");
+        }
+
+        // 指定秒(ここでは1秒)待機するか、指定した処理(ここではマウスクリックする)まで待機
+        await UniTaskHelper.DelaySkippable(1000, () => Input.GetMouseButtonDown(0));
     }
 
     float timer = 0;
@@ -36,8 +90,12 @@ public class TimeModel : MonoBehaviour
     float totalTime;
     GameState gameState;
 
-    void Update()
-    {
+    void Update() {
+        //TimerUpdate();
+    }
+
+
+    void TimerUpdate() {
         timer += Time.deltaTime;
 
         if (timer >= interval) {
@@ -48,20 +106,21 @@ public class TimeModel : MonoBehaviour
     }
 
 
-    private IEnumerator ObserveTime() {
-        //while (true) {
-        //    timer += Time.deltaTime;
-        //    if (timer >= interval) {
-        //        timer = 0;
-        //        totalTime++;
-        //        Debug.Log($"経過時間 : {totalTime} 秒");
-        //    }
-        //    yield return null;
-        //}
+    //private IEnumerator ObserveTime() {
+    //while (true) {
+    //    timer += Time.deltaTime;
+    //    if (timer >= interval) {
+    //        timer = 0;
+    //        totalTime++;
+    //        Debug.Log($"経過時間 : {totalTime} 秒");
+    //    }
+    //    yield return null;
+    //}
 
-        while (true) {
-            yield return new WaitForSeconds(1.0f);
-            Debug.Log($"経過時間 : {totalTime} 秒");
-        }
-    }
+    //while (true) {
+    //    yield return new WaitForSeconds(1.0f);
+    //    totalTime++;
+    //    Debug.Log($"経過時間 : {totalTime} 秒");
+    //}
+    //}
 }
