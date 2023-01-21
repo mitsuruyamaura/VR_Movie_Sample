@@ -135,9 +135,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48f2be5416887a44886666b18e61914a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imgThumbnail: {fileID: 0}
-  txtTitle: {fileID: 0}
-  btnThumbnail: {fileID: 0}
+  imgThumbnail: {fileID: 2002755651974301937}
+  txtTitle: {fileID: 8595643832016919119}
+  btnThumbnail: {fileID: 8265738073117650909}
 --- !u!1 &7177152104075633126
 GameObject:
   m_ObjectHideFlags: 0
