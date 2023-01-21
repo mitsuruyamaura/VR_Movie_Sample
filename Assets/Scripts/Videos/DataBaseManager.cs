@@ -26,7 +26,11 @@ public class DataBaseManager : MonoBehaviour
         return videoDataSO.videoDatasList.Find(x => x.videoNo == searchVideoNo);
     }
 
-
+    /// <summary>
+    /// ˆø”‚Ì”Ô†‚Åw’è‚µ‚½ VideoData ‚ğæ“¾
+    /// </summary>
+    /// <param name="searchItemNo"></param>
+    /// <returns></returns>
     public ItemData GetItemData(int searchItemNo) {
         return itemDataSO.itemDataList.Find(x => x.itemNo == searchItemNo);
     }
