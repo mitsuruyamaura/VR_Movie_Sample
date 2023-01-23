@@ -17,6 +17,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
+
+        if (VideoClipManager.instance.IsVideoPlaying) {
+            rb.velocity = Vector3.zero;
+            return;
+        }
+
         inputHorizontal = Input.GetAxis("Horizontal");
         inputVertical = Input.GetAxis("Vertical");
     }
