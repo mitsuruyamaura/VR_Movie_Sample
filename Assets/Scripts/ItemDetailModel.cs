@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ItemDetailModel : MonoBehaviour
 {
-    // Presenter ‚ğì¬Œã‚ÍA‚±‚Ì•”•ª‚Ì–ğŠ„‚ğ“n‚·
+    // Presenter ã‚’ä½œæˆå¾Œã¯ã€ã“ã®éƒ¨åˆ†ã®å½¹å‰²ã‚’æ¸¡ã™
     private ObjectInfoView objectInfoView;
 
     private ItemData itemData;
@@ -18,19 +19,23 @@ public class ItemDetailModel : MonoBehaviour
         itemData = DataBaseManager.instance.GetItemData(setItemNo);
 
         if (transform.parent.gameObject.TryGetComponent(out objectInfoView)) {
-            Debug.Log("ItemDetail ‚ª ObjectInfoView ‚ğæ“¾‚µ‚Ü‚µ‚½B");
+            //Debug.Log("ItemDetail ãŒ ObjectInfoView ã‚’å–å¾—ã—ã¾ã—ãŸã€‚");
             objectInfoView.SetUpObjectInfoDetail(itemData.itemName);          
         }
     }
 
     private void OnTriggerEnter(Collider other) {
         if (other.TryGetComponent(out PlayerController player)) {
-            Debug.Log("ƒ€[ƒr[Ä¶");
+            Debug.Log("ãƒ ãƒ¼ãƒ“ãƒ¼å†ç”Ÿ");
 
             VideoClipManager.instance.PrepareVideoClip(itemData.itemNo);
 
-            Debug.Log("Šl“¾‚µ‚½ƒAƒCƒeƒ€ˆê——‚É’Ç‰Á");
+            Debug.Log("ç²å¾—ã—ãŸã‚¢ã‚¤ãƒ†ãƒ ä¸€è¦§ã«è¿½åŠ ");
+            
+            UserData.instance.AddItemDataList(itemData);
 
+            UserData.instance.SaveItemData(itemData.itemNo);
+            
             Destroy(transform.parent.gameObject);
         }
     }

@@ -19,13 +19,24 @@ public class ThumbnailGenerator : MonoBehaviour
         //thumbnailViewList = GenerateThumbnailViews();
     }
 
-
+    /// <summary>
+    /// 初期設定
+    /// サムネイルのリストを追加
+    /// </summary>
     public void SetupThumbnailViewList() {
+
+        if (thumbnailViewList.Count > 0) {
+            for (int i = 0; i < thumbnailViewList.Count; i++) {
+                Destroy(thumbnailViewList[i].gameObject);
+            }
+            thumbnailViewList.Clear();
+        }
+        
         thumbnailViewList = GenerateThumbnailViews();
     }
 
     /// <summary>
-    /// 
+    /// 所持しているアイテムに紐づくムービーの情報を持つサムネイルのボタンを作成
     /// </summary>
     /// <returns></returns>
     public List<ThumbnailView> GenerateThumbnailViews() {
