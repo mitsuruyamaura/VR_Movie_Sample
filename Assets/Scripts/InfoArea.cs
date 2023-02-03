@@ -9,7 +9,7 @@ public class InfoArea : MonoBehaviour
 
     private void Start() {
         if (transform.parent.gameObject.TryGetComponent(out objectInfoView)) {
-            Debug.Log("InfoArea ‚ª ObjectInfoView ‚ğæ“¾‚µ‚Ü‚µ‚½B");           
+            //Debug.Log("InfoArea ‚ª ObjectInfoView ‚ğæ“¾‚µ‚Ü‚µ‚½B");           
         }
     }
 
