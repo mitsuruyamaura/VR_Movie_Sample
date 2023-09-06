@@ -3,7 +3,7 @@ using UnityEngine;
 using UniRx;
 using Cysharp.Threading.Tasks;
 using System.Threading;
-using UniRx.Triggers;　　// UpdateAsObservable()や EveryUpdate() の際に必要
+using UniRx.Triggers;　　// UpdateAsObservable() の際に必要
 using InputAsRx;         // InputAsObservable 
 
 
@@ -28,6 +28,8 @@ public class TimeModel : MonoBehaviour
         // また Interval は引数を１つしか指定できない
         // どちらも無限に繰り返すので、Dispose が必要
 
+
+        // Obsevable.Interval は AddTo が必要
         // Subscribe してから1秒間隔でメッセージを発行する
         // (最初に1秒待機してから、1秒間隔でメッセージ発行)
         //Observable.Interval(System.TimeSpan.FromSeconds(1))
@@ -35,35 +37,37 @@ public class TimeModel : MonoBehaviour
         //    .Subscribe(x => Debug.Log($"経過時間 : {x + 1} 秒"))    // "経過時間 : " + x + "秒")
         //    .AddTo(this);
 
+        // Obsevable.Timer は AddTo が必要
         // Subscribe した直後にメッセージを発行し、その後、1秒間隔でメッセージ発行
         // 第1引数が最初のメッセージを発行するまでの待機時間。今回は 0 なので、待機時間なし
         // 第2引数が繰り返しのメッセージを発行する感覚
         //Observable.Timer(System.TimeSpan.Zero, System.TimeSpan.FromSeconds(1))
-        //    .Subscribe(x => Debug.Log($"経過時間 : { x } 秒"))
+        //    .Subscribe(x => Debug.Log($"経過時間 : {x} 秒"))
         //    .AddTo(this);
 
         //StartCoroutine(ObserveTime());
         //TimerAsync(this.GetCancellationTokenOnDestroy()).Forget();
 
+        //// OnCompleted があり、メッセージの発行を行うので、Dispose(AddTo)不要
         //this.UpdateAsObservable()
-        //    .Subscribe(_ => 
-        //    {
+        //    .Subscribe(_ => {
+        //        TimerUpdate();
         //        if (Input.GetMouseButtonDown(0)) {
         //            gameState = gameState == GameState.Play ? GameState.Wait : GameState.Play;
         //        }
-        //    })
-        //    .AddTo(this);
+        //    });
 
         // 挙動的には UpdateAsObservable と同じだが、MonoBehaviour に紐づかなくても利用できる
-        // ただし OnComplete メッセージを発行しないので、UpdateAsObservable の方が安全(手動で Dispose しないといけない。AddTo が利用できない)
+        // ただし OnComplete メッセージを発行しないので、UpdateAsObservable の方が安全(手動で Dispose(AddTo) しないといけない。)
         // そのため MonoBehaviour に紐づけない場合のみ利用する方がいい
-        //Observable.EveryUpdate()
-        //    .Subscribe(_ => {
-        //        if (Input.GetMouseButtonDown(0)) {
-        //            gameState = gameState == GameState.Play ? GameState.Wait : GameState.Play;
-        //        }
-        //    })
-        //    .AddTo(this);
+        Observable.EveryUpdate()
+            .Subscribe(_ => {
+                TimerUpdate();
+                //if (Input.GetMouseButtonDown(0)) {
+                //    gameState = gameState == GameState.Play ? GameState.Wait : GameState.Play;
+                //}
+            })
+            .AddTo(this);
 
 
         // 上記の拡張メソッド
@@ -72,7 +76,11 @@ public class TimeModel : MonoBehaviour
             .AddTo(this);
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     public async UniTask TimerAsync(CancellationToken token) {
         //var token = this.GetCancellationTokenOnDestroy();
 
@@ -80,7 +88,8 @@ public class TimeModel : MonoBehaviour
         while (!token.IsCancellationRequested) {
 
             if (gameState == GameState.Wait) {
-                await UniTask.Yield();
+                //await UniTask.Yield();
+                await UniTask.Yield(PlayerLoopTiming.Update, token);
                 continue;
             }
 
@@ -120,7 +129,7 @@ public class TimeModel : MonoBehaviour
             timer = 0;
             totalTime++;
             TotalTime.Value++;
-            Debug.Log($"経過時間 : {totalTime} 秒");
+            //Debug.Log($"経過時間 : {totalTime} 秒");
         }
     }
 

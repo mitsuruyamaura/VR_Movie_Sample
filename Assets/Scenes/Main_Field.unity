@@ -990,7 +990,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 581827887}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 44.1, y: 5.2, z: 20.5}
+  m_LocalPosition: {x: 44.1, y: 3.67, z: 20.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1408,8 +1408,8 @@ MonoBehaviour:
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
   m_UnlimitedSoftZone: 0
-  m_SoftZoneWidth: 0.36226434
-  m_SoftZoneHeight: 0.4578617
+  m_SoftZoneWidth: 0.35
+  m_SoftZoneHeight: 0.45
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1
@@ -2561,7 +2561,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1627545832}
   m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 44.1, y: 11.850002, z: 8.981862}
+  m_LocalPosition: {x: 44.1, y: 10.320002, z: 8.981863}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -4080,9 +4080,9 @@ GameObject:
   - component: {fileID: 8131643944356226235}
   - component: {fileID: 8131643944356226234}
   - component: {fileID: 8131643944356226233}
-  - component: {fileID: 8131643944356226236}
-  - component: {fileID: 8131643944356226237}
   - component: {fileID: 8131643944356226238}
+  - component: {fileID: 8131643944356226237}
+  - component: {fileID: 8131643944356226236}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -4149,7 +4149,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8131643944356226214}
   m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 44.1, y: 11.850002, z: 8.981862}
+  m_LocalPosition: {x: 44.1, y: 10.320002, z: 8.981863}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

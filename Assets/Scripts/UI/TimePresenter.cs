@@ -21,6 +21,6 @@ public class TimePresenter : MonoBehaviour
             .Subscribe(x => timeView.DisplayTimeTween(x.oldTime, x.newTime))
             .AddTo(this);
 
-        timeModel.TimerAsync(this.GetCancellationTokenOnDestroy()).Forget();
+        //timeModel.TimerAsync(this.GetCancellationTokenOnDestroy()).Forget();
     }
 }
